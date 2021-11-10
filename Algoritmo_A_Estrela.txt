@@ -1,0 +1,68 @@
+Nesse algoritmo a principal preocupação é levar em conta o peso do grafo,(que nesse algoritmo é a distância entre eles)
+com isso o algoritmo retorna o MENOR CAMINHO entre um dado nó inicial e um dado nó final.
+
+Entrada do algoritmo: um nó inicial R, um nó final em um dado grafo M.
+
+Para isso o algoritmo tem que ter desenvolvido uma heurística(um método adequado ao problema dado voltado para guiar o algoritmo para uma solução ótima a maioria das vezes)
+com isso o algoritmo perde precisão mas ganha velocidade.
+
+O algoritmo A* é baseado no algoritmo de Dijkstra mas como esse algoritmo pode gastar muito tempo calculando caminhos alternativos, uma vez que ele avalia cada nó no grafo até os que estão atrás do grafo atual.
+ou seja, por causa disso faz uma solução baseada somente no algoritmo de Dijkstra demasiada custosa.
+
+Algoritmo A* feito:
+
+condições do algoritmo:
+- dado um nó inicial(chamado inicio) e um nó alvo(chamado alvo)
+-um grafo ponderado de n nós.
+
+Queremos determinar qual nó nos mover a cada passo.Para isso é necessário criar uma função matemática f(n) que calcula o quão bom um candidato a nó é para ser incluso no menor caminho.
+
+Podemos definir essa função por:
+f(n)=g(n)+h(n).
+
+Função de Movimento-g(n)
+Como estamos no nó N, sabemos o quanto custa para voltarmos para o nó inicial. Se f(n)=g(n) então temos o algoritmo de Dijsktra.
+Em cada etapa, estaríamos escolhendo o nó com o menor custo para começar do início: o nó com menor valor de g(n).
+
+Função Heurística-h(n)
+Usaremos esta função para estimar quão próximo o nó que estamos olhando está do alvo.
+Na teoria, podemos usar qualquer função heuristica, mas se tivermos a EXATA distância em termos de nós, assim já temos uma solução ótima.
+
+
+Calculando os Movimentos no A*:
+Portanto, a fórmula final que obtemos é f (n) = g (n) + h (n). Começamos do nó inicial e o adicionamos a uma lista de nós abertos(listaAberta). Avaliamos todos os vizinhos dos nós abertos e os adicionamos à lista de nós abertos. Escolhemos aquele com o menor valor para f (n) e se não for o alvo repetimos o processo.
+Quanto menos etapas dermos do ponto de partida, combinadas com o quão perto chegamos da meta, o valor de f (n) será menor se estivermos indo com o caminho mais curto para a meta. Afastar-se da meta e dar mais passos do que o necessário para chegar lá aumenta a função f (n).
+
+Se você está um pouco confuso com a diferença entre g (n) e h (n), veja assim:
+g é algo que podemos (e fazemos) calcular em qualquer etapa, e é a distância entre o início e n.
+h é algo que não sabemos e precisamos estimar - a distância de n ao nó de destino.
+f é a soma dos dois
+
+Com isso mantemos duas listas de nós, uma lista aberta de nós e uma lista fechada de nós.
+
+A lista aberta contém nós que encontramos, mas ainda não analisamos. Inicialmente, ele contém apenas o nó inicial.
+A lista fechada contém nós cujos vizinhos foram adicionados à lista aberta. Os nós fechados têm seu caminho mais curto calculado e seus nós adjacentes "programados" para análise ao serem adicionados à lista aberta.
+Os nós fechados podem se tornar abertos novamente se os encontrarmos por um caminho diferente e esse caminho for mais ideal do que aquele que usamos anteriormente para alcançá-los.
+Passamos por nós abertos, abrimos seus vizinhos, calculamos suas funções f e g e então os fechamos novamente.
+
+
+Pseudocódigo:
+make an empty list C of closed nodes
+make a list O of open nodes and their respective f values containing the start node
+while O isn't empty:
+    pick a node n from O with the best value for f
+    if n is target:
+        return solution
+    for every m which is a neighbor of n:
+        if (m is not in C) and (m is not in O):
+            add m to O, set n as m's parent
+            calculate g(m) and f(m) and save them
+        else:
+            if f(m) from last iteration is better than g(m) from this iteration:
+                set n as m's parent
+                update g(m) and f(m)
+                if m is in C:
+                    move m to O
+    move n from O to C
+
+return that there's no solution
